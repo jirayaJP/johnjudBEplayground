@@ -8,6 +8,7 @@ import { petinfo } from 'src/petInfo/petInfo.entity';
 import {Equal} from "typeorm";
 import {Between} from "typeorm";
 import { Filterinput } from './filter.input';
+import {User} from 'src/user/user.entity';
 
 
 @Injectable()
@@ -17,16 +18,16 @@ export class filterService{
         private petInfoRepository: Repository<petinfo>
     ) {}
 
-    async findPetTypedog(): Promise<petinfo[]>{
-        return this.petInfoRepository.find({where:{Type:"dog"}})
+    async findPetTypedog(userid:string): Promise<petinfo[]>{
+        return this.petInfoRepository.find({where:{$and:[{Type:"dog"},{UserId:{$not:{$eq:userid}}}]}})
     }
 
-    async findPetTypecat(): Promise<petinfo[]>{
-        return this.petInfoRepository.find({where:{Type:"cat"}})
+    async findPetTypecat(userid:string): Promise<petinfo[]>{
+        return this.petInfoRepository.find({where:{$and:[{Type:"cat"},{UserId:{$not:{$eq:userid}}}]}})
     }
 
-    async findPetOther(): Promise<petinfo[]>{
-        return this.petInfoRepository.find({where:{$and:[{Type:{$not:{$eq:"dog"}}},{Type:{$not:{$eq:"cat"}}}]}});
+    async findPetOther(userid:string): Promise<petinfo[]>{
+        return this.petInfoRepository.find({where:{$and:[{Type:{$not:{$eq:"dog"}}},{Type:{$not:{$eq:"cat"}}},{UserId:{$not:{$eq:userid}}}]}});
     }
 
     async findByType(type:Filterinput): Promise<petinfo[]>{

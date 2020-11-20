@@ -4,24 +4,31 @@ import { ObjectID } from 'mongodb';
 import { petinfo } from 'src/petInfo/petInfo.entity';
 import { Filterinput } from './filter.input';
 import { MinLength } from 'class-validator';
+import {User} from 'src/user/user.entity';
 
 @Controller('filter')
 export class filterController{
     constructor(private filterService: filterService){}
 
     @Get('typedog')
-    async findPetTypedog(): Promise<petinfo[]>{
-        return this.filterService.findPetTypedog();
+    async findPetTypedog(
+        @Param('userid') userid: string
+    ): Promise<petinfo[]>{
+        return this.filterService.findPetTypedog(userid);
     }
 
     @Get('typecat')
-    async findPetTypecat(): Promise<petinfo[]>{
-        return this.filterService.findPetTypecat();
+    async findPetTypecat(
+        @Param('userid') userid: string
+    ): Promise<petinfo[]>{
+        return this.filterService.findPetTypecat(userid);
     }
 
     @Get('other')
-    async findPetOther(): Promise<petinfo[]>{
-        return this.filterService.findPetOther();
+    async findPetOther(
+        @Param('userid') userid: string
+    ): Promise<petinfo[]>{
+        return this.filterService.findPetOther(userid);
     }
 
     @Get('/others/Type')
